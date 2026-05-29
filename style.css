@@ -17,7 +17,7 @@ body {
     overflow-x: hidden;
 }
 
-/* --- SISTEMA DE CARRUSEL DE FOTOS ANIMADO (EA SPORTS STYLE - 10 IMÁGENES) --- */
+/* --- SISTEMA DE CARRUSEL DE FOTOS ANIMADO (EA SPORTS STYLE) --- */
 .carrusel-fondo {
     position: fixed;
     top: 0;
@@ -26,7 +26,7 @@ body {
     height: 100%;
     z-index: -2;
     overflow: hidden;
-    background-color: #000;
+    background-color: #000; /* Fondo negro de respaldo */
 }
 
 .foto-slide {
@@ -39,9 +39,22 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0;
-    /* Duración total incrementada a 60s para 10 imágenes, aprox 6s por imagen */
     animation: animacionCarrusel 60s infinite ease-in-out;
+    background-image: none; /* Aseguramos que no se pisen */
 }
+
+/* --- ASIGNACIÓN DE FOTOS DESDE CSS (OBLIGATORIO) --- */
+/* Esta es la corrección clave: ./ le dice a CSS "busca aquí mismo" */
+.foto-slide:nth-child(1) { background-image: url('./fifa_slide_1.png'); animation-delay: 0s; }
+.foto-slide:nth-child(2) { background-image: url('./fifa_slide_2.png'); animation-delay: 6s; }
+.foto-slide:nth-child(3) { background-image: url('./fifa_slide_3.png'); animation-delay: 12s; }
+.foto-slide:nth-child(4) { background-image: url('./fifa_slide_4.png'); animation-delay: 18s; }
+.foto-slide:nth-child(5) { background-image: url('./fifa_slide_5.png'); animation-delay: 24s; }
+.foto-slide:nth-child(6) { background-image: url('./fifa_slide_6.png'); animation-delay: 30s; }
+.foto-slide:nth-child(7) { background-image: url('./fifa_slide_7.png'); animation-delay: 36s; }
+.foto-slide:nth-child(8) { background-image: url('./fifa_slide_8.png'); animation-delay: 42s; }
+.foto-slide:nth-child(9) { background-image: url('./fifa_slide_9.png'); animation-delay: 48s; }
+.foto-slide:nth-child(10) { background-image: url('./fifa_slide_10.png'); animation-delay: 54s; }
 
 /* Distribución matemática de tiempos de retraso para que no se pisen */
 .foto-slide:nth-child(1) { animation-delay: 0s; }
