@@ -31,6 +31,7 @@ const wordReveal = document.getElementById('word-reveal');
 const createGameBtn = document.getElementById('createGameBtn');
 const joinGameBtn = document.getElementById('joinGameBtn');
 
+// Manejador del cambio de pantallas globales
 function showScreen(screenKey) {
     Object.keys(screens).forEach(key => {
         screens[key].classList.remove('active');
@@ -38,7 +39,7 @@ function showScreen(screenKey) {
     screens[screenKey].classList.add('active');
 }
 
-// Restablecer botones de la pantalla de inicio si hay error
+// Re-activar botones si hay fallos
 function resetHomeButtons() {
     createGameBtn.disabled = false;
     createGameBtn.textContent = "Crear Sala Nueva";
@@ -46,16 +47,16 @@ function resetHomeButtons() {
     joinGameBtn.textContent = "Unirse";
 }
 
-// --- LOGICA DE EVENTOS USER INTERFACE ---
+// --- CONTROLES DE INTERFAZ (BOTONES DE ACCIÓN) ---
 
-// Crear Sala
+// Crear una Sala Online
 createGameBtn.addEventListener('click', () => {
     const name = document.getElementById('playerName').value.trim();
     const difficulty = document.getElementById('difficulty').value;
     
     if(!name) return alert("Escribe tu nombre para jugar, crack.");
     
-    // Desactivar botón para evitar clones
+    // Apagar botón inmediatamente para evitar duplicados por clics rápidos
     createGameBtn.disabled = true;
     createGameBtn.textContent = "Creando...";
     
@@ -63,14 +64,14 @@ createGameBtn.addEventListener('click', () => {
     socket.emit('create_room', { playerName: name, difficulty: difficulty });
 });
 
-// Unirse a Sala
+// Unirse a una Sala Online Existente
 joinGameBtn.addEventListener('click', () => {
     const name = document.getElementById('playerName').value.trim();
     const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
     
     if(!name || !code) return alert("Por favor ingresa tu nombre y el código de la sala.");
     
-    // Desactivar botón para evitar clones
+    // Apagar botón inmediatamente para impedir clones
     joinGameBtn.disabled = true;
     joinGameBtn.textContent = "Uniéndose...";
     
@@ -78,14 +79,31 @@ joinGameBtn.addEventListener('click', () => {
     socket.emit('join_room', { roomCode: code, playerName: name });
 });
 
-// Arrancar partida (Solo el Host)
+// Arrancar el partido (Acción habilitada solo para el Host dueño)
 startOnlineGameBtn.addEventListener('click', () => {
     if(currentRoomCode) {
         socket.emit('start_game', { roomCode: currentRoomCode });
     }
 });
 
-// Sistema de mantener presionado para revelar rol
+// Enviar Voto a la banca
+submitVoteBtn.addEventListener('click', () => {
+    if(!selectedVoteId) return alert("Elige a quién vas a acusar de impostor, compa.");
+    
+    submitVoteBtn.disabled = true;
+    submitVoteBtn.textContent = "Voto enviado. Esperando...";
+    socket.emit('cast_vote', { roomCode: currentRoomCode, votedPlayerName: selectedVoteId });
+});
+
+// Ventana de Ver Rol
+document.getElementById('viewMyRoleBtn').addEventListener('click', () => {
+    roleModal.classList.add('active');
+});
+document.getElementById('closeModalBtn').addEventListener('click', () => {
+    roleModal.classList.remove('active');
+});
+
+// --- SISTEMA DE REVELACIÓN POR TOQUE / MANTENER PRESIONADO ---
 function setupRevealEvents() {
     const startReveal = () => {
         if(!myRoleInfo) return;
@@ -99,41 +117,23 @@ function setupRevealEvents() {
         }
     };
 
-    const startRevealTouch = (e) => {
-        e.preventDefault();
-        startReveal();
-    };
-
     const stopReveal = () => {
         roleCard.classList.remove('card-revealed');
         roleCard.classList.add('card-hidden');
+        roleTextDisplay.innerHTML = "Mantén presionado aquí...";
     };
 
     roleCard.addEventListener('mousedown', startReveal);
     roleCard.addEventListener('mouseup', stopReveal);
     roleCard.addEventListener('mouseleave', stopReveal);
-    roleCard.addEventListener('touchstart', startRevealTouch);
+    
+    // Soporte táctil para celulares
+    roleCard.addEventListener('touchstart', (e) => { e.preventDefault(); startReveal(); });
     roleCard.addEventListener('touchend', stopReveal);
 }
 setupRevealEvents();
 
-document.getElementById('viewMyRoleBtn').addEventListener('click', () => {
-    roleModal.classList.add('active');
-});
-document.getElementById('closeModalBtn').addEventListener('click', () => {
-    roleModal.classList.remove('active');
-});
-
-// Enviar voto
-submitVoteBtn.addEventListener('click', () => {
-    if(!selectedVoteId) return alert("Elige a quién vas a acusar de impostor, compa.");
-    
-    submitVoteBtn.disabled = true;
-    submitVoteBtn.textContent = "Voto enviado. Esperando...";
-    socket.emit('cast_vote', { roomCode: currentRoomCode, votedPlayerName: selectedVoteId });
-});
-
-// --- RESPUESTAS DEL SERVIDOR ---
+// --- ESCUCHADORES DE RESPUESTAS DEL SERVIDOR (RENDER) ---
 
 socket.on('room_created', (room) => {
     currentRoomCode = room.code;
@@ -149,16 +149,18 @@ socket.on('room_updated', (room) => {
     roomCodeDisplay.textContent = room.code;
     updatePlayersLobby(room.players);
     
-    // CORRECCIÓN CLAVE: Fuerza a los que se van uniendo a pasar al lobby visualmente
+    // CORRECCIÓN MULTIJUGADOR: Forzar redirección al Lobby a los nuevos miembros que ingresan
     showScreen('lobby');
     resetHomeButtons();
     
+    // Validación de permisos para iniciar juego (Solo el primer jugador de la lista puede iniciar)
     if (room.players[0].id !== socket.id) {
         startOnlineGameBtn.style.display = "none";
     } else {
+        startOnlineGameBtn.style.display = "block";
         if(room.players.length >= 3) {
             startOnlineGameBtn.disabled = false;
-            startOnlineGameBtn.textContent = "¡Iniciar Partido!";
+            startOnlineGameBtn.textContent = "⚽ ¡Iniciar Partido! ⚽";
             startOnlineGameBtn.classList.remove('waiting');
         } else {
             startOnlineGameBtn.disabled = true;
@@ -227,4 +229,24 @@ document.getElementById('playAgainBtn').addEventListener('click', () => {
 socket.on('error_message', (msg) => {
     alert(msg);
     resetHomeButtons();
+});
+
+// --- PESTAÑAS DEL MENÚ DE CONFIGURACIÓN INTERNO (ESTILO REFE) ---
+const tabCreate = document.getElementById('tab-create');
+const tabJoin = document.getElementById('tab-join');
+const formCreateContent = document.getElementById('form-create-content');
+const formJoinContent = document.getElementById('form-join-content');
+
+tabCreate.addEventListener('click', () => {
+    tabJoin.classList.remove('active');
+    tabCreate.classList.add('active');
+    formJoinContent.classList.remove('active');
+    formCreateContent.classList.add('active');
+});
+
+tabJoin.addEventListener('click', () => {
+    tabCreate.classList.remove('active');
+    tabJoin.classList.add('active');
+    formCreateContent.classList.remove('active');
+    formJoinContent.classList.add('active');
 });
