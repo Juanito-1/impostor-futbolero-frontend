@@ -28,6 +28,9 @@ const resultMessage = document.getElementById('result-message');
 const impostorReveal = document.getElementById('impostor-reveal');
 const wordReveal = document.getElementById('word-reveal');
 
+const createGameBtn = document.getElementById('createGameBtn');
+const joinGameBtn = document.getElementById('joinGameBtn');
+
 function showScreen(screenKey) {
     Object.keys(screens).forEach(key => {
         screens[key].classList.remove('active');
@@ -35,25 +38,41 @@ function showScreen(screenKey) {
     screens[screenKey].classList.add('active');
 }
 
+// Restablecer botones de la pantalla de inicio si hay error
+function resetHomeButtons() {
+    createGameBtn.disabled = false;
+    createGameBtn.textContent = "Crear Sala Nueva";
+    joinGameBtn.disabled = false;
+    joinGameBtn.textContent = "Unirse";
+}
+
 // --- LOGICA DE EVENTOS USER INTERFACE ---
 
 // Crear Sala
-document.getElementById('createGameBtn').addEventListener('click', () => {
+createGameBtn.addEventListener('click', () => {
     const name = document.getElementById('playerName').value.trim();
     const difficulty = document.getElementById('difficulty').value;
     
     if(!name) return alert("Escribe tu nombre para jugar, crack.");
+    
+    // Desactivar botón para evitar clones
+    createGameBtn.disabled = true;
+    createGameBtn.textContent = "Creando...";
     
     myPlayerName = name;
     socket.emit('create_room', { playerName: name, difficulty: difficulty });
 });
 
 // Unirse a Sala
-document.getElementById('joinGameBtn').addEventListener('click', () => {
+joinGameBtn.addEventListener('click', () => {
     const name = document.getElementById('playerName').value.trim();
     const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
     
     if(!name || !code) return alert("Por favor ingresa tu nombre y el código de la sala.");
+    
+    // Desactivar botón para evitar clones
+    joinGameBtn.disabled = true;
+    joinGameBtn.textContent = "Uniéndose...";
     
     myPlayerName = name;
     socket.emit('join_room', { roomCode: code, playerName: name });
@@ -80,6 +99,11 @@ function setupRevealEvents() {
         }
     };
 
+    const startRevealTouch = (e) => {
+        e.preventDefault();
+        startReveal();
+    };
+
     const stopReveal = () => {
         roleCard.classList.remove('card-revealed');
         roleCard.classList.add('card-hidden');
@@ -88,7 +112,7 @@ function setupRevealEvents() {
     roleCard.addEventListener('mousedown', startReveal);
     roleCard.addEventListener('mouseup', stopReveal);
     roleCard.addEventListener('mouseleave', stopReveal);
-    roleCard.addEventListener('touchstart', (e) => { e.preventDefault(); startReveal(); });
+    roleCard.addEventListener('touchstart', startRevealTouch);
     roleCard.addEventListener('touchend', stopReveal);
 }
 setupRevealEvents();
@@ -117,12 +141,17 @@ socket.on('room_created', (room) => {
     updatePlayersLobby(room.players);
     showScreen('lobby');
     startOnlineGameBtn.style.display = "block";
+    resetHomeButtons();
 });
 
 socket.on('room_updated', (room) => {
     currentRoomCode = room.code;
     roomCodeDisplay.textContent = room.code;
     updatePlayersLobby(room.players);
+    
+    // CORRECCIÓN CLAVE: Fuerza a los que se van uniendo a pasar al lobby visualmente
+    showScreen('lobby');
+    resetHomeButtons();
     
     if (room.players[0].id !== socket.id) {
         startOnlineGameBtn.style.display = "none";
@@ -197,4 +226,5 @@ document.getElementById('playAgainBtn').addEventListener('click', () => {
 
 socket.on('error_message', (msg) => {
     alert(msg);
+    resetHomeButtons();
 });
