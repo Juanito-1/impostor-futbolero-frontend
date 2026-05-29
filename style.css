@@ -45,16 +45,16 @@ body {
 
 /* --- ASIGNACIÓN DE FOTOS DESDE CSS (OBLIGATORIO) --- */
 /* Esta es la corrección clave: ./ le dice a CSS "busca aquí mismo" */
-.foto-slide:nth-child(1) { background-image: url('./fifa_slide_1.png'); animation-delay: 0s; }
-.foto-slide:nth-child(2) { background-image: url('./fifa_slide_2.png'); animation-delay: 6s; }
-.foto-slide:nth-child(3) { background-image: url('./fifa_slide_3.png'); animation-delay: 12s; }
-.foto-slide:nth-child(4) { background-image: url('./fifa_slide_4.png'); animation-delay: 18s; }
-.foto-slide:nth-child(5) { background-image: url('./fifa_slide_5.png'); animation-delay: 24s; }
-.foto-slide:nth-child(6) { background-image: url('./fifa_slide_6.png'); animation-delay: 30s; }
-.foto-slide:nth-child(7) { background-image: url('./fifa_slide_7.png'); animation-delay: 36s; }
-.foto-slide:nth-child(8) { background-image: url('./fifa_slide_8.png'); animation-delay: 42s; }
-.foto-slide:nth-child(9) { background-image: url('./fifa_slide_9.png'); animation-delay: 48s; }
-.foto-slide:nth-child(10) { background-image: url('./fifa_slide_10.png'); animation-delay: 54s; }
+.foto-slide:nth-child(1) { background-image: url('./2053588.jpg'); animation-delay: 0s; }
+.foto-slide:nth-child(2) { background-image: url('./1303945.jpg'); animation-delay: 6s; }
+.foto-slide:nth-child(3) { background-image: url('./1108509.jpg'); animation-delay: 12s; }
+.foto-slide:nth-child(4) { background-image: url('./3491829.jpg'); animation-delay: 18s; }
+.foto-slide:nth-child(5) { background-image: url('./1303961.jpg'); animation-delay: 24s; }
+.foto-slide:nth-child(6) { background-image: url('./3491841.jpg'); animation-delay: 30s; }
+.foto-slide:nth-child(7) { background-image: url('./1637856.jpg'); animation-delay: 36s; }
+.foto-slide:nth-child(8) { background-image: url('./3491860.jpg'); animation-delay: 42s; }
+.foto-slide:nth-child(9) { background-image: url('./3491870.jpg'); animation-delay: 48s; }
+.foto-slide:nth-child(10) { background-image: url('./691919.jpg'); animation-delay: 54s; }
 
 /* Distribución matemática de tiempos de retraso para que no se pisen */
 .foto-slide:nth-child(1) { animation-delay: 0s; }
