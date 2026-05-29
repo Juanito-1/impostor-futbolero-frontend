@@ -4,23 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Impostor Futbolero 🏆</title>
-    <!-- Importar CSS de estilos -->
     <link rel="stylesheet" href="style.css">
-    <!-- Cargamos Socket.io para la conexión en tiempo real con Render -->
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 </head>
 <body>
 
-    <!-- Encabezado del Juego -->
+    <div class="carrusel-fondo">
+        <div class="foto-slide" style="background-image: url('2053588.jpg');"></div>
+        <div class="foto-slide" style="background-image: url('1303945.jpg');"></div>
+        <div class="foto-slide" style="background-image: url('1108509.jpg');"></div>
+        <div class="foto-slide" style="background-image: url('3491829.jpg');"></div>
+        <div class="foto-slide" style="background-image: url('1303961.jpg');"></div>
+        <div class="foto-slide" style="background-image: url('3491841.jpg');"></div>
+        <div class="foto-slide" style="background-image: url('1637856.jpg');"></div>
+        <div class="foto-slide" style="background-image: url('3491860.jpg');"></div>
+        <div class="foto-slide" style="background-image: url('3491870.jpg');"></div>
+        <div class="foto-slide" style="background-image: url('691919.jpg');"></div>
+        <div class="carrusel-overlay"></div>
+    </div>
+
     <header>
         <h1>⚽ IMPOSTOR FUTBOLERO 🏆</h1>
     </header>
 
     <main>
-        <!-- PANTALLA 1: CONFIGURACIÓN / MENÚ PRINCIPAL (ESTILO REFE) -->
         <div id="config-screen" class="screen active">
             <div class="menu-container">
-                <!-- Pestañas de Navegación del Menú -->
                 <div class="menu-tabs">
                     <button class="tab-btn active" id="tab-create">
                         <span class="icon">👑</span> Crear sala
@@ -33,9 +42,7 @@
                     </button>
                 </div>
 
-                <!-- Cuerpo del Menú -->
                 <div class="menu-content-wrapper">
-                    <!-- Sección Perfil (Izquierda) -->
                     <div class="profile-section">
                         <div class="avatar-container">
                             <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Futbol" alt="Avatar">
@@ -46,10 +53,8 @@
                         </div>
                     </div>
 
-                    <!-- Sección Formularios Dinámicos (Derecha) -->
                     <div class="form-section">
                         
-                        <!-- Formulario para CREAR SALA -->
                         <div id="form-create-content" class="tab-content active">
                             <p class="tab-instruction">Crea una sala y comparte el código de 4 caracteres con amigos.</p>
                             <div class="input-group">
@@ -65,7 +70,6 @@
                             </button>
                         </div>
 
-                        <!-- Formulario para UNIRSE A SALA -->
                         <div id="form-join-content" class="tab-content">
                             <p class="tab-instruction">Ingresa el código de la sala de tu amigo para unirte al partido.</p>
                             <div class="input-group">
@@ -80,14 +84,12 @@
                     </div>
                 </div>
 
-                <!-- Botón Inferior -->
                 <div class="menu-footer">
                     <button class="btn-help">¿Cómo jugar?</button>
                 </div>
             </div>
         </div>
 
-        <!-- PANTALLA 2: LOBBY / ESPERA DE JUGADORES -->
         <div id="lobby-screen" class="screen">
             <div class="lobby-container">
                 <h2>Sala: <span id="room-code-display">----</span></h2>
@@ -95,14 +97,12 @@
                 
                 <h3>Jugadores Conectados:</h3>
                 <ul id="players-list">
-                    <!-- Se llena dinámicamente -->
-                </ul>
+                    </ul>
 
                 <button id="startOnlineGameBtn" class="btn-primary btn-yellow waiting" disabled>Esperando jugadores...</button>
             </div>
         </div>
 
-        <!-- PANTALLA 3: JUEGO EN CURSO / REVELAR ROL Y VOTACIÓN -->
         <div id="game-play-screen" class="screen">
             <div class="play-container">
                 <h2>¡Partido en Curso! 🏃‍♂️💨</h2>
@@ -114,14 +114,12 @@
                     <h3>¿Quién es el Impostor?</h3>
                     <p class="sub">Selecciona al jugador sospechoso para mandarlo a la banca:</p>
                     <div id="vote-options-container">
-                        <!-- Botones de jugadores para votar -->
-                    </div>
+                        </div>
                     <button id="submitVoteBtn" class="btn-primary btn-yellow">Confirmar Voto</button>
                 </div>
             </div>
         </div>
 
-        <!-- PANTALLA 4: RESULTADO DE LA PARTIDA -->
         <div id="result-screen" class="screen">
             <div class="result-container">
                 <h2 id="result-message">Fin del Partido</h2>
@@ -131,7 +129,6 @@
             </div>
         </div>
 
-        <!-- MODAL FLOTANTE: VER ROL REVELAR MANTENIENDO PRESIONADO -->
         <div id="role-modal" class="modal">
             <div class="modal-content">
                 <h3>Tu Identidad Secreta</h3>
@@ -146,12 +143,10 @@
         </div>
     </main>
 
-    <!-- Pie de página fijo -->
     <footer>
         <p>© 2026 Impostor Futbolero. ¡Hecho con pasión por el fútbol!</p>
     </footer>
 
-    <!-- Importar JS de lógica -->
     <script src="script.js"></script>
 </body>
 </html>

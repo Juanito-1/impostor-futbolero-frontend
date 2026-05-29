@@ -56,7 +56,6 @@ createGameBtn.addEventListener('click', () => {
     
     if(!name) return alert("Escribe tu nombre para jugar, crack.");
     
-    // Apagar botón inmediatamente para evitar duplicados por clics rápidos
     createGameBtn.disabled = true;
     createGameBtn.textContent = "Creando...";
     
@@ -71,7 +70,6 @@ joinGameBtn.addEventListener('click', () => {
     
     if(!name || !code) return alert("Por favor ingresa tu nombre y el código de la sala.");
     
-    // Apagar botón inmediatamente para impedir clones
     joinGameBtn.disabled = true;
     joinGameBtn.textContent = "Uniéndose...";
     
@@ -149,11 +147,9 @@ socket.on('room_updated', (room) => {
     roomCodeDisplay.textContent = room.code;
     updatePlayersLobby(room.players);
     
-    // CORRECCIÓN MULTIJUGADOR: Forzar redirección al Lobby a los nuevos miembros que ingresan
     showScreen('lobby');
     resetHomeButtons();
     
-    // Validación de permisos para iniciar juego (Solo el primer jugador de la lista puede iniciar)
     if (room.players[0].id !== socket.id) {
         startOnlineGameBtn.style.display = "none";
     } else {
@@ -231,7 +227,7 @@ socket.on('error_message', (msg) => {
     resetHomeButtons();
 });
 
-// --- PESTAÑAS DEL MENÚ DE CONFIGURACIÓN INTERNO (ESTILO REFE) ---
+// --- PESTAÑAS DEL MENÚ DE CONFIGURACIÓN INTERNO ---
 const tabCreate = document.getElementById('tab-create');
 const tabJoin = document.getElementById('tab-join');
 const formCreateContent = document.getElementById('form-create-content');

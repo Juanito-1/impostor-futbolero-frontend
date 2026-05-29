@@ -2,13 +2,12 @@
 * {
     margin: 0;
     padding: 0;
-    box-shadow: border-box;
+    box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     background-color: #0b0e14;
-    background-image: radial-gradient(circle at 50% 50%, #1a2236 0%, #0b0e14 100%);
     color: #ffffff;
     min-height: 100vh;
     display: flex;
@@ -18,12 +17,72 @@ body {
     overflow-x: hidden;
 }
 
+/* --- SISTEMA DE CARRUSEL DE FOTOS ANIMADO (EA SPORTS STYLE - 10 IMÁGENES) --- */
+.carrusel-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.foto-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    /* Duración total incrementada a 60s para 10 imágenes, aprox 6s por imagen */
+    animation: animacionCarrusel 60s infinite ease-in-out;
+}
+
+/* Distribución matemática de tiempos de retraso para que no se pisen */
+.foto-slide:nth-child(1) { animation-delay: 0s; }
+.foto-slide:nth-child(2) { animation-delay: 6s; }
+.foto-slide:nth-child(3) { animation-delay: 12s; }
+.foto-slide:nth-child(4) { animation-delay: 18s; }
+.foto-slide:nth-child(5) { animation-delay: 24s; }
+.foto-slide:nth-child(6) { animation-delay: 30s; }
+.foto-slide:nth-child(7) { animation-delay: 36s; }
+.foto-slide:nth-child(8) { animation-delay: 42s; }
+.foto-slide:nth-child(9) { animation-delay: 48s; }
+.foto-slide:nth-child(10) { animation-delay: 54s; }
+
+/* Capa oscura superpuesta para dar el look translúcido premium y leer bien las letras */
+.carrusel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(11, 14, 20, 0.5) 0%, rgba(7, 10, 15, 0.85) 100%);
+    z-index: -1;
+}
+
+/* Matemática exacta para transiciones de 10 imágenes en 60 segundos totales */
+@keyframes animacionCarrusel {
+    0% { opacity: 0; }
+    2% { opacity: 1; }     /* Entra la foto (1.2s de desvanecimiento) */
+    8% { opacity: 1; }    /* Se mantiene estática (3.6s) */
+    10% { opacity: 0; }    /* Se desvanece e ingresa la siguiente (1.2s de desvanecimiento) */
+    100% { opacity: 0; }
+}
+
+/* --- ENCABEZADOS Y ELEMENTOS FIJOS --- */
 header {
     width: 100%;
     padding: 20px 0;
     text-align: center;
-    background: rgba(15, 23, 42, 0.6);
+    background: rgba(11, 14, 20, 0.75);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(4px);
 }
 
 header h1 {
@@ -47,7 +106,8 @@ footer {
     text-align: center;
     font-size: 12px;
     color: #64748b;
-    background: rgba(15, 23, 42, 0.4);
+    background: rgba(11, 14, 20, 0.75);
+    backdrop-filter: blur(4px);
 }
 
 /* --- MANEJO DE PANTALLAS (SCREENS) --- */
@@ -68,15 +128,15 @@ footer {
 
 /* --- VARIABLES DE DISEÑO INSPIRADAS EN LA REFE --- */
 :root {
-    --bg-dark-trans: rgba(23, 27, 38, 0.85);
-    --border-light: rgba(255, 255, 255, 0.15);
+    --bg-dark-trans: rgba(15, 20, 32, 0.6); /* Más transparente para apreciar el fondo FIFA */
+    --border-light: rgba(255, 255, 255, 0.1);
     --yellow-primary: #f8c43a;
     --yellow-hover: #e0b02a;
     --blue-btn: #2563eb;
-    --text-muted: #9ca3af;
+    --text-muted: #cbd5e1;
 }
 
-/* --- CONTENEDOR DEL MENÚ ESTILO REFE --- */
+/* --- CONTENEDORES INTERNOS --- */
 .menu-container, .lobby-container, .play-container, .result-container {
     background: var(--bg-dark-trans);
     border: 2px solid var(--border-light);
@@ -85,8 +145,8 @@ footer {
     width: 100%;
     max-width: 650px;
     margin: 0 auto;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(16px); /* Incrementado el desenfoque para dar un look ultra premium brutal */
     text-align: center;
 }
 
@@ -123,7 +183,7 @@ footer {
 }
 
 .tab-btn.active {
-    background: #1e2536;
+    background: rgba(30, 37, 54, 0.85);
     border-color: #3b82f6;
     color: #fff;
     box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
@@ -146,7 +206,7 @@ footer {
     font-weight: bold;
 }
 
-/* Cuerpo interno del menú */
+/* Cuerpo interno */
 .menu-content-wrapper {
     display: flex;
     gap: 24px;
@@ -194,7 +254,7 @@ footer {
 }
 
 .input-group input, .input-group select {
-    background: #0f111a;
+    background: rgba(15, 17, 26, 0.85);
     border: 2px solid var(--border-light);
     border-radius: 12px;
     padding: 12px;
@@ -229,7 +289,7 @@ footer {
     display: flex;
 }
 
-/* --- BOTÓN AMARILLO CLON ADAPTADO --- */
+/* Botón Amarillo */
 .btn-yellow {
     width: 100%;
     box-sizing: border-box;
@@ -299,7 +359,7 @@ h3 { font-size: 18px; margin-bottom: 12px; text-align: left; color: #3b82f6;}
 }
 
 #players-list li {
-    background: #0f111a;
+    background: rgba(15, 17, 26, 0.7);
     border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 12px;
@@ -328,7 +388,7 @@ h3 { font-size: 18px; margin-bottom: 12px; text-align: left; color: #3b82f6;}
 }
 
 .vote-option {
-    background: #0f111a;
+    background: rgba(15, 17, 26, 0.7);
     border: 2px solid var(--border-light);
     border-radius: 12px;
     padding: 14px;
@@ -345,7 +405,7 @@ h3 { font-size: 18px; margin-bottom: 12px; text-align: left; color: #3b82f6;}
 
 .vote-option.selected {
     border-color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(239, 68, 68, 0.2);
     color: #ef4444;
 }
 
@@ -367,7 +427,7 @@ h3 { font-size: 18px; margin-bottom: 12px; text-align: left; color: #3b82f6;}
     display: none;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.85);
     backdrop-filter: blur(6px);
     align-items: center;
     justify-content: center;
