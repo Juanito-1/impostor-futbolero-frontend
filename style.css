@@ -1,0 +1,335 @@
+/* --- CONFIGURACIÓN GENERAL Y ESTILO CLEAN --- */
+:root {
+    --bg-color: #0b0c10;
+    --panel-color: #1f2833;
+    --primary-color: #66fcf1; /* Cian de neón */
+    --secondary-color: #45f3ff;
+    --accent-red: #ff4a5a;
+    --text-color: #c5a100;
+    --text-white: #ffffff;
+    --text-muted: #a9b7c6;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-white);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    background-color: var(--panel-color);
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* --- TARJETAS DE PANTALLA --- */
+.game-screen {
+    background-color: var(--panel-color);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    display: none; /* Controlado por JS */
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.game-screen.active {
+    display: block;
+    animation: fadeIn 0.4s ease-out;
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+/* --- CONTROLES DE INPUTS --- */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #2c3540;
+    border-radius: 8px;
+    background-color: #121821;
+    color: var(--text-white);
+    font-size: 1rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 8px rgba(102, 252, 241, 0.3);
+}
+
+/* Agrupación inline para el código */
+.inline-group {
+    display: flex;
+    gap: 10px;
+}
+.inline-group input {
+    flex: 2;
+}
+.inline-group button {
+    flex: 1;
+    margin-top: 0;
+}
+
+.action-divider {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
+.action-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 0; width: 100%; height: 100%;
+    border-top: 1px dashed #2c3540;
+    z-index: 1;
+}
+.action-divider span {
+    background-color: var(--panel-color);
+    padding: 0 15px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* --- BOTONES MODERNOS --- */
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+    background-color: var(--accent-red);
+    color: white;
+}
+.btn-primary:hover:not(:disabled) {
+    background-color: #ff6b7b;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+.btn-secondary:hover:not(:disabled) {
+    background: rgba(102, 252, 241, 0.1);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+button.waiting {
+    background-color: #34495e;
+}
+
+/* --- LOBBY & VOTACIONES --- */
+#players-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+#players-list li {
+    background-color: #121821;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    border-left: 3px solid var(--primary-color);
+    text-align: left;
+}
+
+#vote-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.vote-option {
+    background-color: #121821;
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-weight: 600;
+}
+
+.vote-option:hover {
+    background-color: #1a2332;
+    border-color: var(--text-muted);
+}
+
+.vote-option.selected {
+    border-color: var(--accent-red);
+    background-color: rgba(255, 74, 90, 0.1);
+    color: var(--accent-red);
+}
+
+.separator {
+    border: 0;
+    height: 1px;
+    background: #2c3540;
+    margin: 25px 0;
+}
+
+/* --- RESULTADOS --- */
+.result-card {
+    background: #121821;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+#result-message {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+/* --- MODAL PARA REVELAR ROL (PRESIÓN PROLONGADA) --- */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.modal-content {
+    background-color: var(--panel-color);
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+}
+
+#role-card {
+    background-color: #121821;
+    padding: 40px 20px;
+    margin: 25px 0;
+    border-radius: 12px;
+    border: 2px dashed var(--text-muted);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: all 0.2s ease;
+}
+
+#role-card.card-hidden .role-text-display {
+    display: none;
+}
+#role-card.card-hidden .tap-instruction {
+    display: block;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+#role-card.card-revealed {
+    border-style: solid;
+    border-color: var(--primary-color);
+    background-color: rgba(102, 252, 241, 0.05);
+}
+#role-card.card-revealed .tap-instruction {
+    display: none;
+}
+#role-card.card-revealed .role-text-display {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--primary-color);
+}
+
+footer {
+    margin-top: auto;
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
+    background-color: var(--panel-color);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

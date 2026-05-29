@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impostor Futbolero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <header>
+        <h1>⚽ Impostor Futbolero 🏆</h1>
+    </header>
+
+    <main>
+        <section id="config-screen" class="game-screen active">
+            <h2>Configura tu Partida</h2>
+            
+            <div class="input-group">
+                <label for="playerName">Tu Nombre / Apodo:</label>
+                <input type="text" id="playerName" placeholder="Ej. ElBicho7" required>
+            </div>
+
+            <div class="action-divider"><span>Opciones de Creador</span></div>
+
+            <div class="input-group">
+                <label for="difficulty">Nivel de Dificultad:</label>
+                <select id="difficulty">
+                    <option value="facil">Fácil (Estrellas mundiales)</option>
+                    <option value="medio">Medio (Jugadores conocidos)</option>
+                    <option value="dificil">Difícil (Leyendas / Datos curiosos)</option>
+                </select>
+            </div>
+            
+            <button id="createGameBtn" class="btn-primary">Crear Sala Nueva</button>
+
+            <div class="action-divider"><span>O Unirse a una</span></div>
+
+            <div class="input-group inline-group">
+                <input type="text" id="roomCodeInput" placeholder="Código (Ej: X79Z)" maxactivity="4">
+                <button id="joinGameBtn" class="btn-secondary">Unirse</button>
+            </div>
+        </section>
+
+        <section id="lobby-screen" class="game-screen">
+            <h2>Sala: <span id="room-code-display">----</span></h2>
+            <p class="subtitle">Comparte el código con tus amigos (Mínimo 3 jugadores)</p>
+            
+            <div id="players-list-container">
+                <h3>Jugadores Conectados:</h3>
+                <ul id="players-list"></ul>
+            </div>
+            
+            <button id="startOnlineGameBtn" class="btn-primary waiting" disabled>Esperando jugadores...</button>
+        </section>
+
+        <section id="game-play-screen" class="game-screen">
+            <h2>Fase de Discusión</h2>
+            <p id="discussion-info">¡A conversar! Usa las pistas para descubrir al impostor.</p>
+            
+            <button id="viewMyRoleBtn" class="btn-secondary">Ver mi Rol de Nuevo</button>
+            
+            <hr class="separator">
+
+            <h2>Votación</h2>
+            <div id="vote-options-container"></div>
+            <button id="submitVoteBtn" class="btn-primary">Confirmar Voto</button>
+        </section>
+
+        <section id="result-screen" class="game-screen">
+            <h2 id="result-message"></h2>
+            <div class="result-card">
+                <p id="impostor-reveal"></p>
+                <p id="word-reveal"></p>
+            </div>
+            <button id="playAgainBtn" class="btn-primary">Volver al Menú</button>
+        </section>
+    </main>
+
+    <div id="role-modal" class="modal">
+        <div class="modal-content">
+            <h3>🔒 Tu Rol Secreto</h3>
+            <p>Nadie más debe ver tu pantalla.</p>
+            
+            <div id="role-card" class="card-hidden">
+                <span class="tap-instruction">Mantén presionado para revelar</span>
+                <span class="role-text-display"></span>
+            </div>
+            
+            <button id="closeModalBtn" class="btn-primary">Cerrar</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Impostor Futbolero. ¡Hecho con pasión por el fútbol!</p>
+    </footer>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
